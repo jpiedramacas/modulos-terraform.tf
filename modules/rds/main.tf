@@ -1,6 +1,4 @@
-
-# Creación de la instancia de RDS
-resource "aws_db_instance" "defoult" {
+resource "aws_db_instance" "default" {
   allocated_storage    = var.db_allocated_storage
   engine               = var.db_engine
   engine_version       = var.db_engine_version
@@ -12,7 +10,6 @@ resource "aws_db_instance" "defoult" {
   publicly_accessible  = var.db_publicly_accessible
 
   tags = {
-    Name = "My-RDS-Instance"
+    Name = var.db_instance_identifier
   }
 }
-

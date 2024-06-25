@@ -9,10 +9,10 @@ resource "aws_vpc" "this" {
 
 # Subnets Públicas
 resource "aws_subnet" "public_subnets" {
-  count             = length(var.public_subnet_cidrs)
-  vpc_id            = aws_vpc.this.id
-  cidr_block        = element(var.public_subnet_cidrs, count.index)
-  availability_zone = element(var.availability_zones, count.index)
+  count                   = length(var.public_subnet_cidrs)
+  vpc_id                  = aws_vpc.this.id
+  cidr_block              = element(var.public_subnet_cidrs, count.index)
+  availability_zone       = element(var.availability_zones, count.index)
   map_public_ip_on_launch = true
 
   tags = {
@@ -77,5 +77,15 @@ resource "aws_security_group" "ec2_sg" {
 
   tags = {
     Name = "ec2-SecurityGroup"
+  }
+}
+
+# DB Subnet Group
+resource "aws_db_subnet_group" "this" {
+  name       = "my-db-subnet-group"
+  subnet_ids = aws_subnet.public_subnets[*].id
+
+  tags = {
+    Name = "my-db-subnet-group"
   }
 }
